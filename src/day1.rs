@@ -1,18 +1,12 @@
 fn parse_input(input: &str) -> Vec<u32> {
-    let mut nums: Vec<u32> = vec![];
-
-    for c in input.chars() {
-        nums.push(c.to_digit(10).unwrap());
-    }
-
-    return nums;
+    return input.chars().map(|c| c.to_digit(10).unwrap()).collect();
 }
 
-fn solve_first_captcha(input: Vec<u32>) -> u32 {
+fn solve_first_captcha(input: &[u32]) -> u32 {
     let mut total: u32 = 0;
     let mut prev: &u32 = input.last().unwrap();
 
-    for num in &input {
+    for num in input {
         if num == prev {
             total += *num;
         }
@@ -23,7 +17,7 @@ fn solve_first_captcha(input: Vec<u32>) -> u32 {
     return total;
 }
 
-fn solve_second_captcha(input: Vec<u32>) -> u32 {
+fn solve_second_captcha(input: &[u32]) -> u32 {
     let jump = input.len()/2;
     let mut total: u32 = 0;
 
@@ -38,12 +32,12 @@ fn solve_second_captcha(input: Vec<u32>) -> u32 {
 
 pub fn solve_part1(input: &str) -> u32 {
     let nums = parse_input(input);
-    return solve_first_captcha(nums);
+    return solve_first_captcha(&nums);
 }
 
 pub fn solve_part2(input: &str) -> u32 {
     let nums = parse_input(input);
-    return solve_second_captcha(nums);
+    return solve_second_captcha(&nums);
 }
 
 #[test]
