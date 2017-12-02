@@ -5,13 +5,11 @@ use std::io::Error;
 fn parse_input(input: &str) -> Vec< Vec<u32> > {
     let mut matrix: Vec< Vec<u32> > = vec![];
     for line in input.lines() {
-        let mut matrix_line: Vec<u32> = vec![];
-        for value in line.split_whitespace() {
-            if value.len() > 0 {
-                matrix_line.push(value.parse::<u32>().unwrap())
-            }
-        }
-        matrix.push(matrix_line);
+        matrix.push(
+            line.split_whitespace()
+                .map(|v| v.parse::<u32>().unwrap())
+                .collect()
+            );
     }
 
     return matrix;
