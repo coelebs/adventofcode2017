@@ -4,6 +4,7 @@ extern crate docopt;
 
 mod day1;
 mod day2;
+mod day3;
 
 use docopt::Docopt;
 
@@ -13,13 +14,16 @@ Advent of Code.
 Usage:
     advent_of_code day1 <path>
     advent_of_code day2 <path>
+    advent_of_code day3 <dest>
 ";
 
 #[derive(Debug, Deserialize)]
 struct Args {
     arg_path: String,
+    arg_dest: String,
     cmd_day1: bool,
     cmd_day2: bool,
+    cmd_day3: bool,
 }
 
 fn main() {
@@ -37,5 +41,10 @@ fn main() {
         let solution1 = day2::solve_part1_file(&args.arg_path).ok().unwrap();
         let solution2 = day2::solve_part2_file(&args.arg_path).ok().unwrap();
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
+    }
+
+    if args.cmd_day3 {
+        let solution1 = day3::solve_part1(&args.arg_dest);
+        println!("Solution part1: {:?}\n", solution1);
     }
 }
