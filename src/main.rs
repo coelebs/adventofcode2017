@@ -45,6 +45,7 @@ fn main() {
 
     if args.cmd_day3 {
         let solution1 = day3::solve_part1(&args.arg_dest);
-        println!("Solution part1: {:?}\n", solution1);
+        let solution2 = day3::solve_part2(&args.arg_dest);
+        println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 }
