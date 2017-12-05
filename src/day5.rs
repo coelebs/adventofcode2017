@@ -1,6 +1,4 @@
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::Error;
+use util;
 
 fn jump_maze(mut maze: Vec<i32>, advanced: bool) -> u32 {
     let mut jumps = 0; 
@@ -26,20 +24,12 @@ pub fn solve(input: &str, advance: bool) -> u32 {
     jump_maze(input.split_whitespace().map(|x| x.parse::<i32>().unwrap()).collect(), advance)
 }
 
-pub fn solve_part1_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-
-    Ok(solve(&contents, false))
+pub fn solve_part1_file(path: &str) -> u32 {
+    solve(&util::read_file(path).ok().unwrap(), false)
 }
 
-pub fn solve_part2_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-
-    Ok(solve(&contents, true))
+pub fn solve_part2_file(path: &str) -> u32 {
+    solve(&util::read_file(path).ok().unwrap(), true)
 }
 
 #[test]
@@ -54,6 +44,6 @@ fn test_examples() {
 fn test_given_input() {
     let input = "inputs/day5.txt";
 
-    assert_eq!(solve_part1_file(input).ok(), Some(358309));
-    assert_eq!(solve_part2_file(input).ok(), Some(28178177));
+    assert_eq!(solve_part1_file(input), 358309);
+    assert_eq!(solve_part2_file(input), 28178177);
 }

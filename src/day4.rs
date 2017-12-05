@@ -1,6 +1,4 @@
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::Error;
+use util;
 
 fn find_duplicate_word(input: Vec<String>) -> bool {
    let mut set = input.to_vec(); 
@@ -36,10 +34,8 @@ pub fn solve_part2(input: &str) -> bool {
     find_duplicate_word(key) 
 }
 
-pub fn solve_part1_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+pub fn solve_part1_file(path: &str) -> u32 {
+    let contents = util::read_file(path).ok().unwrap();
 
     let mut solution = 0;
 
@@ -49,13 +45,11 @@ pub fn solve_part1_file(path: &str) -> Result<u32, Error> {
         }
     }
 
-    Ok(solution)
+    solution
 }
 
-pub fn solve_part2_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+pub fn solve_part2_file(path: &str) -> u32 {
+    let contents = util::read_file(path).ok().unwrap();
 
     let mut solution = 0;
 
@@ -65,15 +59,15 @@ pub fn solve_part2_file(path: &str) -> Result<u32, Error> {
         }
     }
 
-    Ok(solution)
+    solution
 }
 
 #[test]
 fn test_given_input() {
     let input = "inputs/day4.txt";
 
-    assert_eq!(solve_part1_file(input).ok(), Some(455));
-    assert_eq!(solve_part2_file(input).ok(), Some(186));
+    assert_eq!(solve_part1_file(input), 455);
+    assert_eq!(solve_part2_file(input), 186);
 }
 
 #[test]

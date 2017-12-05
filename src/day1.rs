@@ -1,9 +1,7 @@
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::Error;
+use util;
 
 fn parse_input(input: &str) -> Vec<u32> {
-    return input.chars().map(|c| c.to_digit(10).unwrap()).collect();
+    input.chars().map(|c| c.to_digit(10).unwrap()).collect()
 }
 
 fn solve_first_captcha(input: &[u32]) -> u32 {
@@ -18,7 +16,7 @@ fn solve_first_captcha(input: &[u32]) -> u32 {
         prev = num;
     }
 
-    return total;
+    total
 }
 
 fn solve_second_captcha(input: &[u32]) -> u32 {
@@ -31,33 +29,25 @@ fn solve_second_captcha(input: &[u32]) -> u32 {
         }
     }
 
-    return total;
+    total
 }
 
 fn solve_part1(input: &str) -> u32 {
     let nums = parse_input(input);
-    return solve_first_captcha(&nums);
+    solve_first_captcha(&nums)
 }
 
 fn solve_part2(input: &str) -> u32 {
     let nums = parse_input(input);
-    return solve_second_captcha(&nums);
+    solve_second_captcha(&nums)
 }
 
-pub fn solve_part1_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents: String = String::new();
-    file.read_to_string(&mut contents)?;
-
-    return Ok(solve_part1(contents.trim()));
+pub fn solve_part1_file(path: &str) -> u32 {
+    solve_part1(&util::read_file(path).ok().unwrap().trim())
 }
 
-pub fn solve_part2_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-
-    return Ok(solve_part2(contents.trim()));
+pub fn solve_part2_file(path: &str) -> u32 {
+    solve_part2(&util::read_file(path).ok().unwrap().trim())
 }
 
 #[test]
@@ -66,7 +56,7 @@ fn test_examples_part1() {
     let solutions   = [3,       4,          0,          9]; 
 
     for i in 0..inputs.len() {
-        assert!(solve_part1(inputs[i]) == solutions[i]);
+        assert_eq!(solve_part1(inputs[i]), solutions[i]);
     }
 }
 
@@ -76,7 +66,7 @@ fn test_examples_part2() {
     let solutions   = [6,       0,          4,          12,         4];
 
     for i in 0..inputs.len() {
-        assert!(solve_part2(inputs[i]) == solutions[i]);
+        assert_eq!(solve_part2(inputs[i]), solutions[i]);
     }
 }
 
@@ -84,6 +74,6 @@ fn test_examples_part2() {
 fn test_given_input() {
     let input = "inputs/day1.txt";
 
-    assert_eq!(solve_part1_file(input).ok(), Some(1069));
-    assert_eq!(solve_part2_file(input).ok(), Some(1268));
+    assert_eq!(solve_part1_file(input), 1069);
+    assert_eq!(solve_part2_file(input), 1268);
 }

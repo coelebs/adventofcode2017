@@ -2,6 +2,7 @@
 extern crate serde_derive;
 extern crate docopt;
 
+mod util;
 mod day1;
 mod day2;
 mod day3;
@@ -38,14 +39,14 @@ fn main() {
                             .unwrap_or_else(|e| e.exit());
 
     if args.cmd_day1 {
-        let solution1 = day1::solve_part1_file(&args.arg_path).ok().unwrap();
-        let solution2 = day1::solve_part2_file(&args.arg_path).ok().unwrap();
+        let solution1 = day1::solve_part1_file(&args.arg_path);
+        let solution2 = day1::solve_part2_file(&args.arg_path);
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 
     if args.cmd_day2 {
-        let solution1 = day2::solve_part1_file(&args.arg_path).ok().unwrap();
-        let solution2 = day2::solve_part2_file(&args.arg_path).ok().unwrap();
+        let solution1 = day2::solve_part1_file(&args.arg_path);
+        let solution2 = day2::solve_part2_file(&args.arg_path);
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 

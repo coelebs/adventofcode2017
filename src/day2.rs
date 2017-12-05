@@ -1,6 +1,4 @@
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::Error;
+use util;
 
 fn parse_input(input: &str) -> Vec< Vec<u32> > {
     let mut matrix: Vec< Vec<u32> > = vec![];
@@ -12,7 +10,7 @@ fn parse_input(input: &str) -> Vec< Vec<u32> > {
             );
     }
 
-    return matrix;
+    matrix
 }
 
 fn calculate_first_checksum(matrix: &[Vec<u32>]) -> u32 {
@@ -29,7 +27,7 @@ fn calculate_first_checksum(matrix: &[Vec<u32>]) -> u32 {
         checksum += max - min;
     }
 
-    return checksum;
+    checksum
 }
 
 fn calculate_second_checksum(matrix: &[Vec<u32>]) -> u32 {
@@ -48,33 +46,25 @@ fn calculate_second_checksum(matrix: &[Vec<u32>]) -> u32 {
         }
     }
 
-    return checksum;
+    checksum
 }
 
 fn solve_part1(input: &str) -> u32 {
     let matrix = parse_input(input);
-    return calculate_first_checksum(&matrix);
+    calculate_first_checksum(&matrix)
 }
 
 fn solve_part2(input: &str) -> u32 {
     let matrix = parse_input(input);
-    return calculate_second_checksum(&matrix);
+    calculate_second_checksum(&matrix)
 }
 
-pub fn solve_part1_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-
-    return Ok(solve_part1(&contents));
+pub fn solve_part1_file(path: &str) -> u32 {
+    solve_part1(&util::read_file(path).ok().unwrap())
 }
 
-pub fn solve_part2_file(path: &str) -> Result<u32, Error> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-
-    return Ok(solve_part2(&contents));
+pub fn solve_part2_file(path: &str) -> u32 {
+    solve_part2(&util::read_file(path).ok().unwrap())
 }
 
 #[test]
@@ -94,6 +84,6 @@ fn test_examples_part2() {
 #[test]
 fn test_given_input() {
     let input = "inputs/day2.txt";
-    assert_eq!(solve_part1_file(input).ok(), Some(34581));
-    assert_eq!(solve_part2_file(input).ok(), Some(214));
+    assert_eq!(solve_part1_file(input), 34581);
+    assert_eq!(solve_part2_file(input), 214);
 }
