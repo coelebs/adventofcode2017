@@ -33,10 +33,16 @@ pub fn solve_part2_file(path: &str) -> u32 {
 }
 
 #[test]
-fn test_examples() {
+fn test_examples_part1() {
     let input = "0 3 0 1 -3";
 
     assert_eq!(solve(input, false), 5);
+}
+
+#[test]
+fn test_examples_part2() {
+    let input = "0 3 0 1 -3";
+
     assert_eq!(solve(input, true), 10);
 }
 

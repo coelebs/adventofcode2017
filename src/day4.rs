@@ -71,7 +71,7 @@ fn test_given_input() {
 }
 
 #[test]
-fn test_example_part1() {
+fn test_examples_part1() {
     let input = ["aa bb cc dd ee", "aa bb cc dd aa", "aa bb cc dd aaa"];
     let valid = [true,             false,            true];
 
@@ -81,7 +81,7 @@ fn test_example_part1() {
 }
 
 #[test]
-fn test_example_part2() {
+fn test_examples_part2() {
     let input = ["abcde fghij", "abcde xyz ecdab", "a ab abc abd abf abj", "iiii oiii ooii oooi oooo", "oiii ioii iioi iiio"];
     let valid = [true, false, true, true, false];
 
