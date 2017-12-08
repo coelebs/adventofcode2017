@@ -1,19 +1,19 @@
 use util;
 
 #[derive(Debug)]
-struct Program<'a> {
+struct Program {
     name: String,
     weight: u32,
-    children: Vec<Program<'a>>,
+    children: Vec<Program>>,
 }
 
-fn parse<'a>(input: &Vec< Vec<&str>>, index: usize) -> Program<'a> {
+fn parse(input: &Vec< Vec<&str>>, index: usize) -> Program {
     let mut list = input[index].iter();
     let name = String::from(*list.next().unwrap());
     let weight = list.next().unwrap()
                     .trim_matches(|c| c == '(' || c == ')')
                     .parse::<u32>().unwrap();
-    let mut children: Vec<&'a Program<'a>> = vec![];
+    let mut children: Vec<Program> = vec![];
     
     let children_idx: Vec<usize> = list.skip(1).map(|p| input.iter().position(|i| i[0] == p.trim_matches(|c| c == ',')).unwrap()).collect();
     
@@ -24,7 +24,7 @@ fn parse<'a>(input: &Vec< Vec<&str>>, index: usize) -> Program<'a> {
     Program{name, weight, children}
 }
 
-pub fn solve_part1<'a>(input: &str) -> String {
+pub fn solve_part1(input: &str) -> String {
     let programs: Vec<Vec<&str>> = input.lines().map(|l| l.split_whitespace().collect()).collect();
     let mut index = 0;
 
