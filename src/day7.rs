@@ -23,19 +23,16 @@ fn parse(input: &Vec< Vec<&str>>, index: usize) -> Program {
 }
 
 fn find_unbalanced(part: &Program, expected: u32) -> (&Program, u32) {
-    if part.children[0].weight + part.children[0].children_weight != part.children[1].weight + part.children[1].children_weight
-        && part.children[0].weight + part.children[0].children_weight != part.children[2].weight + part.children[2].children_weight {
-        return (&part.children[0], part.children[1].weight)
-    } else if part.children[1].weight + part.children[1].children_weight != part.children[0].weight + part.children[0].children_weight
-        && part.children[1].weight + part.children[0].children_weight != part.children[2].weight + part.children[2].children_weight {
-        return (&part.children[1], part.children[1].weight)
-    } else if part.children[2].weight + part.children[2].children_weight != part.children[0].weight + part.children[0].children_weight 
-        && part.children[2].weight + part.children[2].children_weight != part.children[1].weight + part.children[1].children_weight {
-        return (&part.children[2], part.children[0].weight)
+    for child in part.children {
+        if part.children.iter().map(|x| x.weight+x.children_weight == child.weight+child.children_weight).fold(0, |acc, x| if x { acc + 1} else { acc }) == 1 {
+            let neighbour_index = (part.children.iter().position(|x| x.name == child.name).unwrap() + 1) % part.children.len();
+            return (child, 
+                    part.children[neighbour_index].weight + part.children[neighbour_index].children_weight)
+        }
     }
 
     println!("{:?} {:?}", part.name, expected);
-    (part, expected)
+    (part, expected - part.children_weight)
 }
 
 fn check_balance(part: &Program, expected: u32) -> u32 {
@@ -71,6 +68,10 @@ pub fn solve_part2(input: &str) -> u32 {
     let base = solve_part1(input);
     
     check_balance(&base, u32::max_value())
+}
+
+pub fn solve_part2_file(path: &str) -> u32 {
+    solve_part2(&util::read_file(path).ok().unwrap())    
 }
 
 #[test]
@@ -118,4 +119,5 @@ pub fn test_given_input() {
     let input = "inputs/day7.txt"; 
 
     assert_eq!(solve_part1_file(input).name, "vmpywg");
+    assert_eq!(solve_part2_file(input), 30);
 }
