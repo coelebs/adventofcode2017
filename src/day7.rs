@@ -23,16 +23,25 @@ fn parse(input: &Vec< Vec<&str>>, index: usize) -> Program {
 }
 
 fn find_unbalanced(part: &Program, expected: u32) -> (&Program, u32) {
-    for child in part.children {
+    let mut index = 0;
+    let mut neighbour_index = 0;
+    let mut found = false;
+
+    for child in part.children.iter() {
         if part.children.iter().map(|x| x.weight+x.children_weight == child.weight+child.children_weight).fold(0, |acc, x| if x { acc + 1} else { acc }) == 1 {
-            let neighbour_index = (part.children.iter().position(|x| x.name == child.name).unwrap() + 1) % part.children.len();
-            return (child, 
-                    part.children[neighbour_index].weight + part.children[neighbour_index].children_weight)
+            index = part.children.iter().position(|x| x.name == child.name).unwrap();
+            neighbour_index = (index + 1) % part.children.len();
+            found = true;
         }
     }
 
-    println!("{:?} {:?}", part.name, expected);
-    (part, expected - part.children_weight)
+    if found {
+        (&part.children[index], 
+         part.children[neighbour_index].weight + part.children[neighbour_index].children_weight)
+    } else {
+        println!("{:?} {:?}", part.name, expected);
+        (part, expected - part.children_weight)
+    }
 }
 
 fn check_balance(part: &Program, expected: u32) -> u32 {
@@ -119,5 +128,5 @@ pub fn test_given_input() {
     let input = "inputs/day7.txt"; 
 
     assert_eq!(solve_part1_file(input).name, "vmpywg");
-    assert_eq!(solve_part2_file(input), 30);
+    assert_eq!(solve_part2_file(input), 1674);
 }
