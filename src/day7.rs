@@ -1,10 +1,11 @@
 use util;
 
 #[derive(Debug)]
-struct Program {
+pub struct Program {
     name: String,
     weight: u32,
-    children: Vec<Program>>,
+    children: Vec<Program>,
+    children_weight: u32,
 }
 
 fn parse(input: &Vec< Vec<&str>>, index: usize) -> Program {
@@ -13,18 +14,41 @@ fn parse(input: &Vec< Vec<&str>>, index: usize) -> Program {
     let weight = list.next().unwrap()
                     .trim_matches(|c| c == '(' || c == ')')
                     .parse::<u32>().unwrap();
-    let mut children: Vec<Program> = vec![];
-    
-    let children_idx: Vec<usize> = list.skip(1).map(|p| input.iter().position(|i| i[0] == p.trim_matches(|c| c == ',')).unwrap()).collect();
-    
-    children_idx.iter().for_each(|i| children.push(&parse(input, *i)));
-    println!("after rt");
-    
 
-    Program{name, weight, children}
+    let children: Vec<Program> = list.skip(1).map(|p| parse(input, input.iter().position(|i| i[0] == p.trim_matches(|c| c == ',')).unwrap())).collect();
+    
+    let children_weight = children.iter().map(|c| c.weight + c.children_weight).fold(0, |acc, x| acc + x);
+
+    Program{name, weight, children, children_weight}
 }
 
-pub fn solve_part1(input: &str) -> String {
+fn find_unbalanced(part: &Program, expected: u32) -> (&Program, u32) {
+    if part.children[0].weight + part.children[0].children_weight != part.children[1].weight + part.children[1].children_weight
+        && part.children[0].weight + part.children[0].children_weight != part.children[2].weight + part.children[2].children_weight {
+        return (&part.children[0], part.children[1].weight)
+    } else if part.children[1].weight + part.children[1].children_weight != part.children[0].weight + part.children[0].children_weight
+        && part.children[1].weight + part.children[0].children_weight != part.children[2].weight + part.children[2].children_weight {
+        return (&part.children[1], part.children[1].weight)
+    } else if part.children[2].weight + part.children[2].children_weight != part.children[0].weight + part.children[0].children_weight 
+        && part.children[2].weight + part.children[2].children_weight != part.children[1].weight + part.children[1].children_weight {
+        return (&part.children[2], part.children[0].weight)
+    }
+
+    println!("{:?} {:?}", part.name, expected);
+    (part, expected)
+}
+
+fn check_balance(part: &Program, expected: u32) -> u32 {
+    let (unbalanced, result) = find_unbalanced(part, expected);
+
+    if unbalanced.name == part.name {
+        return result;
+    } else {
+        return check_balance(unbalanced, result)
+    }
+}
+
+pub fn solve_part1(input: &str) -> Program {
     let programs: Vec<Vec<&str>> = input.lines().map(|l| l.split_whitespace().collect()).collect();
     let mut index = 0;
 
@@ -36,15 +60,17 @@ pub fn solve_part1(input: &str) -> String {
         }
     }
 
-    parse(&programs, index).name
+    parse(&programs, index)
 }
 
-pub fn solve_part1_file(path: &str) -> String {
+pub fn solve_part1_file(path: &str) -> Program {
     solve_part1(&util::read_file(path).ok().unwrap())    
 }
 
 pub fn solve_part2(input: &str) -> u32 {
-    32
+    let base = solve_part1(input);
+    
+    check_balance(&base, u32::max_value())
 }
 
 #[test]
@@ -64,7 +90,7 @@ ugml (68) -> gyxo, ebii, jptl
 gyxo (61)
 cntj (57)";
 
-    assert_eq!(solve_part1(&input), "tknk");
+    assert_eq!(solve_part1(&input).name, "tknk");
 }
 
 #[test]
@@ -91,5 +117,5 @@ cntj (57)";
 pub fn test_given_input() {
     let input = "inputs/day7.txt"; 
 
-    assert_eq!(solve_part1_file(input), "vmpywg");
+    assert_eq!(solve_part1_file(input).name, "vmpywg");
 }
