@@ -23,6 +23,7 @@ Usage:
     advent_of_code day4 <path>
     advent_of_code day5 <path>
     advent_of_code day6 <path>
+    advent_of_code day7 <path>
 ";
 
 #[derive(Debug, Deserialize)]
@@ -35,6 +36,7 @@ struct Args {
     cmd_day4: bool,
     cmd_day5: bool,
     cmd_day6: bool,
+    cmd_day7: bool,
 }
 
 fn main() {
@@ -76,5 +78,11 @@ fn main() {
         let solution1 = day6::solve_part1_file(&args.arg_path);
         let solution2 = day6::solve_part2_file(&args.arg_path);
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
+    }
+
+    if args.cmd_day7 {
+        let solution1 = day7::solve_part1_file(&args.arg_path);
+        let solution2 = day7::solve_part2_file(&args.arg_path);
+        println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1.name, solution2);
     }
 }
