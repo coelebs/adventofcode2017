@@ -86,9 +86,7 @@ fn score_groups(input: &String, level: u32) -> u32 {
 pub fn solve_part1(input: &str) -> u32 {
     let mut filtered = String::from(input);
     filter_escape(&mut filtered);
-    println!("{:?}", filtered);
     filter_garbage(&mut filtered);
-    println!("\t{:?}", filtered);
     score_groups(&filtered, 1)
 }
 
