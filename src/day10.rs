@@ -4,10 +4,13 @@ fn parse(input: &str) -> Vec<u32> {
     input.split(',').map(|x| x.trim().parse::<u32>().unwrap()).collect()
 }
 
-fn step(data: &mut Vec<usize>, index: usize, rev_length: u32) {
+fn step(data: &mut Vec<usize>, index: &mut usize, rev_length: u32) {
     for i in 0..(rev_length as f32 / 2.0).floor() as usize {
         let len = data.len();
-        data.swap((index + i) % len, (rev_length as usize  + index - i) % len);
+        let src = (*index + i) % len;
+        let dest= (rev_length as usize - 1 + *index - i) % len;
+
+        data.swap(src, dest);
     }
 }
 
@@ -22,17 +25,16 @@ fn solve_part1(input: &str, data_length: usize) -> u32 {
     }
 
     for length in input_lengths {
-        step(&mut data, index, length);
-        index = length as usize + skip_size;
+        step(&mut data, &mut index, length);
+        index = (index + length as usize + skip_size) % data.len();
         skip_size += 1;
-        println!("{:?}", data);
     }
 
     (data[0] * data[1]) as u32
 }
 
 pub fn solve_part1_file(path: &str) -> u32 {
-    solve_part1(&util::read_file(path).ok().unwrap(), 255)
+    solve_part1(&util::read_file(path).ok().unwrap(), 256)
 }
 
 #[test]
@@ -41,4 +43,11 @@ fn test_examples_part1() {
     let data_length = 5;
 
     assert_eq!(solve_part1(input_lengths, data_length), 12);
+}
+
+#[test]
+fn test_given_input() {
+    let input = "inputs/day10.txt";
+    
+    assert_eq!(solve_part1_file(input), 212);
 }

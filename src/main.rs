@@ -103,9 +103,8 @@ fn main() {
 
     if args.cmd_day9 {
         let solution1 = day9::solve_part1_file(&args.arg_path);
-        //let solution2 = day9::solve_part2_file(&args.arg_path);
-        //println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
-        println!("{:?}", solution1);
+        let solution2 = day9::solve_part2_file(&args.arg_path);
+        println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 
     if args.cmd_day10 {
