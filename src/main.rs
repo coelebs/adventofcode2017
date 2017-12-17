@@ -118,7 +118,7 @@ fn main() {
 
     if args.cmd_day11 {
         let solution1 = day11::solve_part1_file(&args.arg_path);
-        let solution2 =0;// day10::solve_part2_file(&args.arg_path);
+        let solution2 = day11::solve_part2_file(&args.arg_path);
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 }

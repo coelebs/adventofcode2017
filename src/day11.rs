@@ -1,6 +1,6 @@
 use util;
 
-struct Distance {
+struct Coordanites {
     row: i32,
     col: i32,
 }
@@ -14,9 +14,9 @@ enum Direction {
     NorthWest,
 }
 
-impl Distance {
-    fn new() -> Distance  {
-        Distance{ row: 0, col: 0}
+impl Coordanites {
+    fn new() -> Coordanites  {
+        Coordanites{ row: 0, col: 0}
     }
 
     fn step(&mut self, dir: &Direction) {
@@ -64,27 +64,44 @@ fn parse(input: &str) -> Vec<Direction> {
     directions
 }
 
-fn calculate_distance(a: &Distance, b: &Distance) -> u32 {
+fn calculate_distance(a: &Coordanites, b: &Coordanites) -> u32 {
     ((a.col - b.col).abs() 
      + (a.col + a.row - b.col - b.row).abs()
      + (a.row - b.row).abs()) as u32 / 2
 }
 
-fn exec_steps(directions: &Vec<Direction>) -> Distance {
-    let mut dist = Distance::new();
-    directions.iter().for_each(|dir| dist.step(dir));
-    dist
+fn exec_steps(directions: &Vec<Direction>, max_dist: &mut u32) -> Coordanites {
+    let mut cords = Coordanites::new();
+    directions.iter().for_each(|dir| {
+        cords.step(dir);
+        let dist = calculate_distance(&Coordanites::new(), &cords);
+        if dist > *max_dist {
+            *max_dist = dist;
+        }
+    });
+    cords
 }
 
 fn solve_part1(input: &str) -> u32 {
-    let directions = parse(input); 
-    let distance = exec_steps(&directions);
+    let mut max_dist = 0;
+    let cords = exec_steps(&parse(input), &mut max_dist);
 
-    calculate_distance(&Distance::new(), &distance)
+    calculate_distance(&Coordanites::new(), &cords)
 }
 
 pub fn solve_part1_file(path: &str) -> u32 {
     solve_part1(&util::read_file(path).ok().unwrap())
+}
+
+fn solve_part2(input: &str) -> u32 {
+    let mut max_dist = 0;
+    exec_steps(&parse(input), &mut max_dist);
+
+    max_dist
+}
+
+pub fn solve_part2_file(path: &str) -> u32 {
+    solve_part2(&util::read_file(path).ok().unwrap())
 }
 
 #[test]
@@ -95,4 +112,12 @@ fn test_examples_part1() {
     for (i, r) in input.iter().zip(result.iter()) {
         assert_eq!(solve_part1(i), *r);
     }
+}
+
+#[test] 
+fn test_given_input() {
+    let input = "inputs/day11.txt";
+
+    assert_eq!(solve_part1_file(input), 682);
+    assert_eq!(solve_part2_file(input), 1406);
 }
