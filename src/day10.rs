@@ -69,7 +69,7 @@ fn print_hex(input: &Vec<usize>) -> String {
     result
 }
 
-fn solve_part2(input: &str, data_length: usize) -> String {
+pub fn solve_part2(input: &str, data_length: usize) -> String {
     let mut lengths = parse_ascii(input);
     lengths.extend([17, 31, 73, 47, 23].iter().cloned());
     let mut data = vec![];
