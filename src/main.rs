@@ -22,6 +22,7 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day20;
 
 use docopt::Docopt;
 
@@ -48,6 +49,7 @@ Usage:
     advent_of_code day17 <input>
     advent_of_code day18 <path>
     advent_of_code day19 <path>
+    advent_of_code day20 <path>
 ";
 
 #[derive(Debug, Deserialize)]
@@ -76,6 +78,7 @@ struct Args {
     cmd_day17: bool,
     cmd_day18: bool,
     cmd_day19: bool,
+    cmd_day20: bool,
 }
 
 fn main() {
@@ -193,6 +196,12 @@ fn main() {
     if args.cmd_day19 {
         let solution1 = day19::solve_part1_file(&args.arg_path);
         let solution2 = day19::solve_part2_file(&args.arg_path);
+        println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
+    }
+
+    if args.cmd_day20 {
+        let solution1 = day20::solve_part1_file(&args.arg_path);
+        let solution2 = 0;//day20::solve_part2_file(&args.arg_path);
         println!("Solution part 1: {:?}\nSolution part 2: {:?}", solution1, solution2);
     }
 }
